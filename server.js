@@ -2,6 +2,7 @@ const express = require('express');
 const server = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
+const dashbordRoutes = require('./routes/dashbordRoutes')
 
 require('dotenv').config();
 
@@ -23,6 +24,6 @@ server.use(express.urlencoded({ extended: true }));
 server.use(express.static("public"));
 server.use('/public',express.static("public"));
 
-
+server.use('/dashbord',dashbordRoutes.router)
 
 server.listen(process.env.PORT, () => { console.log("Server is running ") });
