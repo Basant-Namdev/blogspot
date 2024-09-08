@@ -3,9 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blogspot</title>
+    <title>Signup and Login Form</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>" Welcome to blogspot. "</h1>
+    <div class="main">
+        <input type="checkbox" id="chk" >
+
+        <div class="login">
+            <form action="/">
+                <label for="chk" >Login</label>
+                <input type="email" name="email" id="" placeholder="Email Or User name" required="">
+                <input type="password" name="password" id="" placeholder="password" required="">
+                <button>Login</button>
+                <button type="reset">Forget password</button>
+                <p>Don't have account <a href="#">Create account</a>.</p>
+
+            </form>
+        </div>
+
+        <div class="signup">
+            <form action="/">
+                <label for="chk">Sign up</label>
+                <input type="text" name="txt" placeholder="User name" required="">
+
+                <input type="email" name="email" id="" placeholder="email" required="">
+                <input type="password" name="pswd" placeholder="password" id="" required="">
+                <input type="password" name="pswd" placeholder="confirm password" id="" required="">
+                <button>Sign up</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
