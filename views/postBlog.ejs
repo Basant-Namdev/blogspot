@@ -68,7 +68,7 @@
             <div>
                 <label for="category">Category : </label>
                 <select name="" id="category" required>
-                    <option value="">-- Select an option --</option>
+                    <option value="" disabled selected>-- Select an option --</option>
                     <option value="travel">travel</option>
                     <option value="entertainment">entertainment</option>
                     <option value="education">education</option>
@@ -77,8 +77,9 @@
                 </select>
             </div>
         </div>
-        <div id="blog-post-editor"></div>
-        <div style="display: flex; justify-content: center; margin-top: .3rem;"><button>Create post</button></div>
+        <div id="blog-post-editor" name="content"></div>
+        <div style="display: flex; justify-content: center; margin-top: .3rem;"><button type="submit">Create
+                post</button></div>
     </form>
 
     <script src="https://cdn.tiny.cloud/1/<%= tinymce %>/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
@@ -132,16 +133,41 @@
 
         });
 
-        const getEditorContent = async () => {
-            const editor = await tinymce.get('blog-post-editor');
-            if (editor) {
-                console.log(editor.getContent());
-            } else {
-                console.error('Editor instance not found!');
-            }
-        };
 
-        document.querySelector("button").addEventListener('click', getEditorContent);
+        document.querySelector("form").addEventListener('submit', async (event) => {
+            event.preventDefault();
+            try {
+                const editor = await tinymce.get('blog-post-editor');
+                if (editor && typeof editor.getContent === 'function') {
+                    console.log(editor.getContent());
+                    const response = await fetch('/dashbord/postBlog/saveBlog', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            title: document.getElementById('title').value,
+                            description: document.getElementById('description').value,
+                            category: document.getElementById('category').value,
+                            blogContent: editor.getContent(),
+                        })
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const result = await response.json();
+                    if (result.success) {
+                        alert('blog post successfully.')
+                    }
+                } else {
+                    alert('internal server error.plz try again later.')
+                    console.error('Editor instance not found or does not have getContent method!');
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error.message, error.stack);
+                alert('Error submitting form. Please try again later.');
+            }
+        });
 
     </script>
 </body>

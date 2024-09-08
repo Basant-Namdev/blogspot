@@ -9,12 +9,11 @@ const userSchema = new Schema({
 });
 
 const blogSchema = new Schema({
-    postBy: { type: String, required: true },
+    postBy: { type: String},
     title: { type: String, required: true },
     description: { type: String, required: true },
     category: { type: String, required: true },
-    blogLink: { type: String, required: true },
-    category: { type: String},
+    blogContent: { type: String, required: true },
 }, {
     timestamps: true
   }
