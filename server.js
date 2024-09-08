@@ -11,7 +11,7 @@ main().catch(err => console.log(err));
 
 async function main() {
   try {
-    exports.dbConnection = await mongoose.connect(process.env.MONGODB_URL);
+    dbConnection = await mongoose.connect(process.env.MONGODB_URL);
     console.log("database connected");
   } catch (err) {
     console.error("Error connecting to database:", err);

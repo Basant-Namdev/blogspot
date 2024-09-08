@@ -4,7 +4,6 @@ const dashbordController = require('../controller/dashbordController')
 
 router
     .get('/',dashbordController.dashbordRender)
-    .get('/allBlogs',dashbordController.allBlogs)
     .get('/myBlogs',dashbordController.myBlogs)
     .get('/postBlog',dashbordController.postBlog)
 

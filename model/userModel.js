@@ -6,16 +6,19 @@ const userSchema = new Schema({
     username: { type: String, required: true ,unique : true},
     password: { type: String, required: true },
     profile:{type:String},
+});
+
+const blogSchema = new Schema({
+    postBy: { type: String, required: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    category: { type: String, required: true },
+    blogLink: { type: String, required: true },
+    category: { type: String},
 }, {
     timestamps: true
   }
 );
 
-const blogSchema = new Schema({
-    postBy: { type: String, required: true },
-    blogLink: { type: String, required: true ,unique : true},
-    category: [ { type: String} ],
-}, {
-    timestamps: true
-  }
-);
+exports.users = mongoose.model('users', userSchema);
+exports.blogs = mongoose.model('blogs', blogSchema);
