@@ -9,7 +9,7 @@ const userSchema = new Schema({
 });
 
 const blogSchema = new Schema({
-    postBy: { type: String},
+    postBy: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
     category: { type: String, required: true },

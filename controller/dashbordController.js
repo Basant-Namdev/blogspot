@@ -85,7 +85,7 @@ exports.saveBlog = async (req, res) => {
   
       // Get the updated content
       const editorContent = $.html();
-  
+      blog.postBy = req.user;
       blog.title = req.body.title;
       blog.description = req.body.description;
       blog.category = req.body.category;

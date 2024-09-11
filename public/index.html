@@ -11,27 +11,29 @@
         <input type="checkbox" id="chk" >
 
         <div class="login">
-            <form action="/login" method="post" enctype="application/x-www-form-urlencoded">
+            <form action="/login" method="post" id="login-form" enctype="application/x-www-form-urlencoded">
                 <label for="chk" >Login</label>
-                <input type="email" name="email" id="" placeholder="Email Or User name" required="">
-                <input type="password" name="password" id="" placeholder="password" required="">
+                <input type="email" name="username" id="loginEmail" placeholder="enter your email" required="">
+                <input type="password" name="password" id="loginPassword" placeholder="password" required=""><br>
+                <span id="login-auth-failed"></span>
                 <button type="submit">Login</button>
-                <button type="reset">Forget password</button>
-                <p>Don't have account <a href="#">Create account</a>.</p>
+                <button>Forget password</button>
             </form>
         </div>
 
         <div class="signup">
-            <form action="/signup" method="post" enctype="application/x-www-form-urlencoded">
+            <form action="/signUp" method="post" enctype="application/x-www-form-urlencoded">
                 <label for="chk">Sign up</label>
-                <input type="text" name="txt" placeholder="User name" required="">
+                <input type="text" name="name" placeholder="enter your name" required="">
 
-                <input type="email" name="email" id="" placeholder="email" required="">
-                <input type="password" name="pswd" placeholder="password" id="" required="">
-                <input type="password" name="pswd" placeholder="confirm password" id="" required="">
+                <input type="email" name="username" id="email" placeholder="enter your email" required="">
+                <input type="password" name="password" placeholder="create prsassword" id="password" required="">
+                <input type="password" name="confirm-password" placeholder="confirm password" id="confirm-password" required="">
                 <button type="submit">Sign up</button>
             </form>
         </div>
     </div>
+
+    <script src="./script.js"></script>
 </body>
 </html>

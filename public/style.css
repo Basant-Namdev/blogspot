@@ -104,5 +104,13 @@ button:hover {
 }
 
 #chk:checked ~ .login label {
-    transform: scale(.3);
+    transform: scale(.5);
+}
+
+#login-auth-failed{
+    color: red;
+    color: red;
+    position: absolute;
+    top: 11rem;
+    left: 3.7rem;
 }
