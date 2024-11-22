@@ -4,10 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #blogs-container{
+            display: flex;
+        }
+        .blog{
+            background: grey;
+            cursor: pointer;
+            width: 6rem;
+            height: 6rem;
+            margin: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            color: brown;
+            font-weight: bold;
+            padding: 5rem;
+        }
+    </style>
 </head>
-<body>
+<body style="background-color: rgba(40, 37, 37, 0.836);">
     <%- include('./header.ejs') %>
-    <h1>dashbord</h1>
     <a href="/dashbord/postBlog"><button>Post a blog</button></a>
+    <div id="blogs-container">
+    <% for(let blog of blogs){ %>
+        <a href="/dashbord/<%= blog._id %>" target="" rel="noopener noreferrer">
+            <div class="blog"><%= blog.title %></div>
+        </a>
+        <% } %>
+    </div>
+
 </body>
 </html>

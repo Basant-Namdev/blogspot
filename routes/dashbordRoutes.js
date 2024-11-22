@@ -11,6 +11,7 @@ router
     .get('/',homeController.isAuth,dashbordController.dashbordRender)
     .get('/myBlogs',dashbordController.myBlogs)
     .get('/postBlog',dashbordController.postBlog)
+    .get('/:id',dashbordController.openBlog)
     .post('/postBlog/saveBlog', upload.single('content'), dashbordController.saveBlog)
 
 exports.router = router
