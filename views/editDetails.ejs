@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+#form-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
+}
+
+form {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    width: 31rem;
+    height: auto; /* Allow height to adjust based on content */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 2rem;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+img {
+    width: 11rem;
+    height: 11rem;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+#profile-pic {
+    margin-top: 1rem;
+}
+
+.details {
+    display: flex;
+    justify-content: space-between; /* Align label and input */
+    width: 100%;
+    margin: 0.5rem 0;
+    align-items: center; /* Center align items vertically */
+}
+
+.details label {
+    font-weight: bold;
+    flex: 0 0 40%; /* Fixed width for label */
+    margin-right: 1rem; /* Space between label and input */
+}
+
+.inp {
+    flex: 1; /* Take remaining space */
+    padding: 0.5rem; /* Add padding for better touch targets */
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+}
+
+button {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background: #b1c5c6;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #a0b3b4;
+}
+
+input[type="radio"] {
+    margin-left: 0.5rem; /* Space between radio buttons and label */
+}
+    </style>
+</head>
+
+<body>
+    <%- include('./header.ejs') %>
+        <div id="form-cont">
+            <form action="/dashbord/editDetails/save" method="post" enctype="multipart/form-data">
+                <legend style="text-align: center;">
+                    <h1>Edit Details</h1>
+                </legend>
+                <div style="display: flex;flex-direction: column; align-items: center;">
+                    <img id="default-profile-pic" src=<% if(user.profile){ %> "<%=user.profile%>" <% }else{ %>
+                            "/public/images/blank profile.jpg" <% } %> alt=" Profile Image" /><br>
+                                <input type="file" name="image" id="profile-pic">
+                </div>
+                <div class="details">
+                    <label for="name">Name : </label> <input type="text" id="name" value="<%=user.name%>" name="name"
+                        class="inp">
+                </div>
+                <div class="details">
+                    <label for="gender">Gender : </label>
+                    <div style="width: 12.7rem;"> Male <input type="radio" name="gender" id="gender" value="male"
+                            required> Female
+                        <input type="radio" name="gender" value="Female" required>
+                    </div>
+                </div>
+                <div class="details">
+                    <label for="date">Date of birth : </label> <input type="date" id="date" class="inp" name="dob"
+                        value="<%=user.dob%>">
+                </div>
+                <div>
+                    <button type="submit">Save details</button>
+                </div>
+            </form>
+        </div>
+        <script>
+            const gender = '<%=user.gender%>';
+            const radioButtons = document.getElementsByName('gender');
+
+            // this is for gender to be selected according to the db data
+            if (gender === 'male') {
+                radioButtons[0].checked = true;
+            } else {
+                radioButtons[1].checked = true;
+            }
+
+            const profilePic = document.getElementById('profile-pic');
+            const defaultProfilePic = document.getElementById('default-profile-pic');
+
+            // this change the profile pic as we select one
+            profilePic.addEventListener('change', (e) => {
+                const file = profilePic.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    defaultProfilePic.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+
+        </script>
+</body>
+
+</html>

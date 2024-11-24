@@ -11,6 +11,11 @@ router
     .get('/',homeController.isAuth,dashbordController.dashbordRender)
     .get('/myBlogs',dashbordController.myBlogs)
     .get('/postBlog',dashbordController.postBlog)
+    .get('/userDetails',dashbordController.userDetails)
+    .get('/editDetails',dashbordController.editDetails)
+    .post('/editDetails/save', upload.single('image') ,dashbordController.saveDetails)
+    .get('/resetPassword',dashbordController.resetPassword)
+    .patch('/passwordReset', dashbordController.passwordReset)
     .get('/:id',dashbordController.openBlog)
     .post('/postBlog/saveBlog', upload.single('content'), dashbordController.saveBlog)
 

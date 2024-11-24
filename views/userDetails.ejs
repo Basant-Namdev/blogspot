@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+ * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+#form-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
+}
+
+#form {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px; /* Adjust the max width as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: #333;
+}
+
+img {
+    width: 11rem;
+    height: 11rem;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 2px solid #ddd;
+}
+
+.details {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Ensure it takes the full width of the form */
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.details label {
+    font-weight: bold;
+    margin-right: 1rem; /* Space between label and value */
+    flex: 0 0 40%; /* Fixed width for label */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.inp {
+    font-weight: bold;
+    color: #333;
+    flex: 1; /* Take remaining space */
+    text-align: right; /* Align text to the right */
+    padding-left: 0.5rem; /* Optional padding for better spacing */
+    overflow: hidden; /* Prevent overflow */
+    text-overflow: ellipsis; /* Show ellipsis if text is too long */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+button {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background: #b1c5c6;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #a0b3b4;
+}
+    </style>
+</head>
+
+<body>
+    <%- include('./header.ejs') %>
+    <div id="form-cont">
+    <div id="form">
+        <legend style="text-align: center;">
+            <h1>Details</h1>
+        </legend>
+        <div style="display: flex;flex-direction: column; align-items: center;">
+            <img id="default-profile-pic" src=<% if(user.profile){ %> "<%=user.profile%>" <% }else{ %>
+                    "/public/images/blank profile.jpg" <% } %> alt=" Profile Image" /><br>
+        </div>
+        <div class="details">
+            <label for="name">Name:</label>
+            <span class="inp"><%=user.name%></span>
+        </div>
+        <div class="details">
+            <label for="username">Username:</label>
+            <span class="inp"><%=user.username%></span>
+        </div>
+        <div class="details">
+            <label for="gender">Gender:</label>
+            <span class="inp"><%=user.gender%></span>
+        </div>
+        <div class="details">
+            <label for="dob">Date of birth:</label>
+            <span class="inp"><%=user.dob%></span>
+        </div>
+        <div>
+            <a href="/dashbord/editDetails"><button>Edit details</button></a>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,12 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1 style="text-align: center;box-shadow: 0rem 0rem 0.4rem;">header</h1>
-    <a href="/dashbord/logout"><button>logout</button></a>
-</body>
-</html>
+<style>
+    header {
+        margin-top: 1.2rem;
+        margin-bottom: 1rem;
+        background-color: #f2f2f2;
+        box-shadow: 0rem 0rem 0.4rem;
+        display: flex;
+        padding: 1rem;
+    }
+
+    #other-opotions>a {
+        text-decoration: none;
+        transition: all ease .3s;
+    }
+
+    #other-opotions {
+        display: flex;
+        justify-content: space-evenly;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    #other-opotions>a:hover {
+        scale: 1.2;
+    }
+
+    #logo {
+        width: 30%;
+    }
+</style>
+
+<header>
+    <div id="logo"></div>
+    <div id="other-opotions">
+        <a href="/dashbord">Dashbord</a>
+        <a href="/dashbord/myBlogs">My Blogs</a>
+        <a href="/dashbord/postBlog">Post a blog</a>
+        <a href="/dashbord/userDetails">User Details</a>
+        <a href="/dashbord/resetPassword">Reset Password</a>
+        <a href="/dashbord/logout">Logout</a>
+    </div>
+</header>

@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const myFunctions = require('../myFunctions');
 const model = require('../model/userModel')
 const blogModel = model.blogs;
+const users = model.users;
 const cloudinary = require('cloudinary').v2;
 const cheerio = require('cheerio');
-
-
+const bcrypt = require('bcrypt');
 
 require('dotenv').config();
 // cloudinary Configuration
@@ -117,5 +117,115 @@ exports.openBlog = async(req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: 'internal server error.pls try again later.' })
+  }
+}
+// render reset password page
+exports.resetPassword = async (req, res) => {
+  try {
+    myFunctions.renderView(res, 'resetPassword', {});
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: 'internal server error. unable to take this request. pls try again later.' })
+  }
+}
+// it resets the password
+var salt = bcrypt.genSaltSync(parseInt(process.env.SALT));
+exports.passwordReset = async (req, res) => {
+  try {
+    const user = await users.findById(req.user);
+    const isValid = await bcrypt.compare(req.body.oldPassword, user.password);
+    if (!isValid) {
+      return res.status(401).json({ success: false, message: 'Invalid old password' });
+    }
+    const hashedPassword = bcrypt.hashSync(req.body.newPassword, salt);
+    user.password = hashedPassword.toString('hex');
+    user.save()
+      .then(() => {
+        res.status(201).json({ success: true })
+      })
+      .catch(error => {
+        console.log("Error Creating User", error);
+        res.status(500).json({ success: false })
+      })
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: 'internal server error.pls try again later.' })
+  }
+}
+// to view the detail of the user when user is logged in
+exports.userDetails = async (req, res) => {
+  try {
+      const user = await users.findById(req.user);
+      myFunctions.renderView(res, 'userDetails', { user: user });
+  } catch (err) {
+      console.log(err);
+      res.status(500).send({ message: 'internal server error.pls try again later.' })
+  }
+}
+// it is to send the edit detail from 
+exports.editDetails = async (req, res) => {
+  try {
+      const user = await users.findById(req.user);
+      myFunctions.renderView(res, 'editDetails', { user: user });
+
+  } catch (err) {
+      console.log(err);
+      res.status(500).send({ message: 'internal server error.pls try again later.' })
+  }
+}
+// it stores the details got from editform 
+exports.saveDetails = async (req, res) => {
+  // Upload an image
+  const user = await users.findById(req.user);
+  let profileImg,profileId;
+  if (user.profile.startsWith('http')) {
+       profileImg = user.profile.split('/')[7];
+       profileId = profileImg.slice(0, profileImg.lastIndexOf('.'));
+  }
+  
+  let filepath, file;
+  if (req.file) {
+    file = req.file;
+  }
+  if (file) {
+      // Upload to cloudinary
+      await cloudinary.uploader.upload(req.file.path,{
+        folder: 'blogspot/userProfiles',
+      }, (err, result) => {
+          if (err) {
+              console.log(err);
+              return res.status(500).json({
+                  message: 'internal server error.pls try again later.'
+              })
+          } else {
+              filepath = result.url;
+              user.profile = filepath;
+          }
+      })
+  }
+  try {  
+      user.name = req.body.name;
+      user.dob = (req.body.dob).split("T")[0];
+      user.gender = req.body.gender;
+      await user.save().then(() => { res.redirect("/dashbord/userDetails"); }).catch(err => {
+          console.log(err);
+          return res.sendStatus(500);
+      })
+      if (profileId && file) {
+          // delete image from cloudinary
+          cloudinary.uploader
+              .destroy(profileId)
+              .then(() => {
+                  console.log("image replaced");
+              })
+              .catch((error) => {
+                  console.log(error);
+              });
+      }
+
+  } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: 'internal server error.pls try again later.' })
   }
 }

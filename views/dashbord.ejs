@@ -4,32 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        #blogs-container{
-            display: flex;
+    <style>* {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+    
+    #blogs-container {
+        display: flex;
+        flex-wrap: wrap; /* Allow items to wrap to the next line */
+        justify-content: center; /* Center items horizontally */
+        padding: 2rem; /* Add padding around the container */
+    }
+    
+    .blog {
+        background: rgba(79, 213, 230, 0.5); /* Semi-transparent background */
+        cursor: pointer;
+        width: 12rem; /* Increased width for better text fitting */
+        height: 6rem; /* Fixed height */
+        margin: 1rem; /* Space between blog items */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #2a60a5; /* Text color */
+        font-weight: bold;
+        border-radius: 0.5rem; /* Rounded corners */
+        transition: transform 0.3s, box-shadow 0.3s; /* Smooth hover effect */
+        text-align: center; /* Center text within the box */
+    }
+    
+    .blog:hover {
+        transform: scale(1.05); /* Slightly enlarge on hover */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+    }
+    
+    a {
+        text-decoration: none; /* Remove underline from links */
+    }
+    
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+        .blog {
+            width: 100%; /* Full width on smaller screens */
+            height: auto; /* Allow height to adjust based on content */
         }
-        .blog{
-            background: grey;
-            cursor: pointer;
-            width: 6rem;
-            height: 6rem;
-            margin: 1rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-            color: brown;
-            font-weight: bold;
-            padding: 5rem;
-        }
+    }
     </style>
 </head>
-<body style="background-color: rgba(40, 37, 37, 0.836);">
+<body>
     <%- include('./header.ejs') %>
-    <a href="/dashbord/postBlog"><button>Post a blog</button></a>
     <div id="blogs-container">
     <% for(let blog of blogs){ %>
-        <a href="/dashbord/<%= blog._id %>" target="" rel="noopener noreferrer">
+        <a href="/dashbord/<%= blog._id %>" target="" rel="noopener noreferrer" style="text-decoration: none;">
             <div class="blog"><%= blog.title %></div>
         </a>
         <% } %>
