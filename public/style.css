@@ -116,3 +116,28 @@ input[type="checkbox"]:checked + .login + .signup {
         transform: translateY(-20px);
     }
 }
+.signup {
+    display: none; /* Hide signup form initially */
+}
+.eye{
+    position: absolute;
+    top: 17rem;
+    left: 21rem;
+    cursor: pointer;
+}
+.fa-eye{
+    display: none;
+}
+#loginPass > .eye{
+    top: 9.6rem;
+    left: 21rem;
+}
+#forgot-password{
+    margin: 0;
+    text-align: end;
+    color: blue;
+    cursor: pointer;
+}
+#forgot-password :hover{
+    text-decoration: underline;
+}

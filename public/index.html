@@ -8,32 +8,38 @@
 </head>
 <body>
     <div class="main">
-        <input type="checkbox" id="chk" >
-
         <div class="login">
             <form action="/login" method="post" id="login-form" enctype="application/x-www-form-urlencoded">
-                <label for="chk" >Login</label>
+                <label>Login</label>
                 <input type="email" name="username" id="loginEmail" placeholder="enter your email" required="">
-                <input type="password" name="password" id="loginPassword" placeholder="password" required=""><br>
+                <div id="loginPass"><input type="password" name="password" id="loginPassword" placeholder="password" required="">
+                    <i class="fa-solid fa-eye eye" onclick="eye()"></i><i class="fa-solid fa-eye-slash eye" onclick="eye()"></i>
+                    <p id="forgot-password"><small>forgot password</small></p>
+                </div><br>
                 <span id="login-auth-failed"></span>
                 <button type="submit">Login</button>
-                <button>Forget password</button>
             </form>
+            <p style="text-align: center;">--------- Or ---------</p>
+            <button type="button" onclick="toggleForms('signup')" style="background: #be3b3b;">Sign Up</button>
         </div>
 
         <div class="signup">
-            <form action="/signUp" method="post" enctype="application/x-www-form-urlencoded">
-                <label for="chk">Sign up</label>
-                <input type="text" name="name" placeholder="enter your name" required="">
-
+            <form action="/signUp" method="post" id="signup-form" enctype="application/x-www-form-urlencoded">
+                <label>Sign up</label>
+                <input type="text" name="name" id="name" placeholder="enter your name" required="">
                 <input type="email" name="username" id="email" placeholder="enter your email" required="">
-                <input type="password" name="password" placeholder="create prsassword" id="password" required="">
+                <input type="password" name="password" placeholder="create password" id="password" required="">
                 <input type="password" name="confirm-password" placeholder="confirm password" id="confirm-password" required="">
-                <button type="submit">Sign up</button>
+                <i class="fa-solid fa-eye eye" onclick="signEye()"></i><i class="fa-solid fa-eye-slash eye" onclick="signEye()"></i>
+                <span id="error-message"></span>
+                <button type="submit" style="background: #be3b3b;">Sign up</button>
             </form>
+            <p style="text-align: center;">--------- Or ---------</p>
+            <button type="button" onclick="toggleForms('login')">Login</button>
         </div>
     </div>
 
+    <script src="https://kit.fontawesome.com/126cda3aca.js" crossorigin="anonymous"></script>
     <script src="./script.js"></script>
 </body>
 </html>

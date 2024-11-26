@@ -50,7 +50,7 @@ exports.login = (req, res, next) => {
           if (err) {
             return next(err);
           }
-          return res.json({ redirectUrl: '/dashbord' });
+          return res.json({ redirectUrl: '/dashbord',success: true });
         });
       })(req, res, next);
     } catch (err) {
