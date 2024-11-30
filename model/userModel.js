@@ -8,6 +8,8 @@ const userSchema = new Schema({
     gender: {type:String},
     dob:{type:String},
     profile:{type:String},
+    resetToken: {type:String},
+    resetTokenExpiration: Date
 });
 
 const blogSchema = new Schema({
