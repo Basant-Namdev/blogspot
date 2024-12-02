@@ -51,7 +51,26 @@ exports.saveBlog = async (req, res) => {
   try {
     const blog = new blogModel();
     const content = req.body.blogContent;
-
+    let file,filepath;
+    if (req.file) {
+      file = req.file;
+    }
+    if (file) {
+        // Upload to cloudinary
+        await cloudinary.uploader.upload(req.file.path,{
+          folder: 'blogspot/blogs',
+        }, (err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    message: 'internal server error.pls try again later.'
+                })
+            } else {
+                filepath = result.url;
+                blog.coverImage = filepath;
+            }
+        })
+    }
     // Load the content into Cheerio
     const $ = cheerio.load(content);
 

@@ -2,29 +2,32 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(to right, #2c3e50, #4ca1af);
     margin: 0;
     padding: 0;
 }
 
 .main {
-    width: 100%;
+    width: 50%;
     max-width: 400px;
     margin: 5rem auto;
     background: #ecf0f1;
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    position: relative;
 }
 
 input[type="checkbox"] {
     display: none;
 }
 
-.login, .signup {
+.login,
+.signup {
     padding: 2rem;
     opacity: 0;
     transform: translateY(20px);
@@ -85,12 +88,12 @@ span {
     display: none;
 }
 
-input[type="checkbox"]:checked + .login {
+input[type="checkbox"]:checked+.login {
     display: none;
     animation: fadeOut 0.5s forwards;
 }
 
-input[type="checkbox"]:checked + .login + .signup {
+input[type="checkbox"]:checked+.login+.signup {
     display: block;
     animation: fadeIn 0.5s forwards;
 }
@@ -100,6 +103,7 @@ input[type="checkbox"]:checked + .login + .signup {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -111,33 +115,244 @@ input[type="checkbox"]:checked + .login + .signup {
         opacity: 1;
         transform: translateY(0);
     }
+
     to {
         opacity: 0;
         transform: translateY(-20px);
     }
 }
+
 .signup {
-    display: none; /* Hide signup form initially */
+    display: none;
+    /* Hide signup form initially */
 }
-.eye{
+
+.eye {
     position: absolute;
     top: 17rem;
     left: 21rem;
     cursor: pointer;
 }
-.fa-eye{
+
+.fa-eye {
     display: none;
 }
-#loginPass > .eye{
+
+#loginPass>.eye {
     top: 9.6rem;
     left: 21rem;
 }
-#forgot-password{
+
+#forgot-password {
     margin: 0;
     text-align: end;
     color: blue;
     cursor: pointer;
 }
-#forgot-password :hover{
+
+#forgot-password :hover {
     text-decoration: underline;
+}
+
+/* Add a simple navigation bar */
+header nav {
+    background: linear-gradient(to right, #2c3e50, #af4c4c);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header nav .logo a {
+    color: #fff;
+    font-size: 24px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+    width: 50%;
+    justify-content: space-evenly;
+}
+
+header nav ul li {
+    display: inline;
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all ease .5s;
+}
+
+header nav ul li a:hover {
+    color: rgb(0, 200, 255);
+    scale: 1.5;
+}
+
+#login-register {
+    background: #778899a6;
+    border-radius: 2rem;
+    padding: 0.7rem;
+    font-weight: bold;
+}
+
+/* Hero section styling */
+.hero {
+    background: linear-gradient(to right, #2c3e50, #4ca1af);
+    color: white;
+    text-align: center;
+    display: flex;
+}
+
+.hero-content {
+    width: 50%;
+    padding: 7rem;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+}
+
+.hero-content p {
+    font-size: 1.5rem;
+}
+
+.hero .hero-content button {
+    padding: 10px 20px;
+    background-color: #be3b3b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Blog preview section */
+.blog-previews {
+    padding: 50px 0;
+    background-color: #f4f4f4;
+}
+
+.blog-previews .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.blog-previews .blogs {
+    display: flex;
+    justify-content: space-between;
+}
+
+.blog-previews .blog {
+    background-color: white;
+    padding: 20px;
+    margin: 10px;
+    width: 30%;
+    height: 32rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    transition: all ease .3s;
+}
+.blog:hover{
+    scale: 1.04;
+}
+
+.blog-previews .blog h3 {
+    font-size: 1.8rem;
+}
+
+.blog-previews .blog p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.blog-previews .blog a {
+    color: #be3b3b;
+    text-decoration: none;
+}
+
+/* Footer styling */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 1px 0;
+    text-align: center;
+}
+
+footer .social-links {
+    list-style-type: none;
+    padding: 0;
+}
+
+footer .social-links li {
+    display: inline;
+    margin: 0 10px;
+}
+
+footer .social-links a {
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+
+/* About Section Styling */
+.about {
+    padding: 50px 0;
+    background-color: #f9f9f9;
+}
+
+.about .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.about h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #3f3333c4;
+}
+
+.about p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.about h3 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-top: 30px;
+    color: #3b83be;
+}
+
+.about ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.about ul li {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.about ul li strong {
+    color: #be773b;
+}
+
+.about .container p:last-of-type {
+    margin-bottom: 0;
+}
+
+.coverImage{
+    width: 20rem;
+    height: 12rem;
 }

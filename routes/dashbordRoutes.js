@@ -17,6 +17,6 @@ router
     .get('/resetPassword',dashbordController.resetPassword)
     .patch('/passwordReset', dashbordController.passwordReset)
     .get('/:id',dashbordController.openBlog)
-    .post('/postBlog/saveBlog', upload.single('content'), dashbordController.saveBlog)
+    .post('/postBlog/saveBlog', upload.single('coverImage'), dashbordController.saveBlog)
 
 exports.router = router

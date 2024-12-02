@@ -16,6 +16,7 @@ const blogSchema = new Schema({
     postBy: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
+    coverImage: { type: String, required: true },
     category: { type: String, required: true },
     blogContent: { type: String, required: true },
 }, {

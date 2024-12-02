@@ -6,6 +6,7 @@ const localStrategy = require('passport-local');
 homeController.initializePass(passport);
 
 router
+    .get('/',homeController.renderHome)
     .post('/signUp',homeController.signUp)
     .post('/login',homeController.login)
     .get('/dashbord/logout', homeController.logOut)

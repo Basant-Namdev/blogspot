@@ -54,18 +54,29 @@
             width: 12rem;
             border: none;
         }
+
+        input::placeholder {
+            color: black;
+        }
+
+        textarea::placeholder {
+            color: black;
+        }
     </style>
 </head>
 
 <body>
 
-    <form action="" id="editor" method="post" enctype="application/x-www-form-urlencoded">
+    <form action="" id="editor" method="post" enctype="multipart/form-data">
         <h1 style="text-align: center; color: white; margin: .8rem;">Post a blog</h1>
         <div id="form-cont">
-            <div><label for="title">Title : </label> <input type="text" id="title" required></div>
+            <div><label for="title">Title : </label> <input type="text" id="title"
+                    placeholder="add a title for your blog..." required></div>
             <div><label for="description">Description : </label> <textarea name="description" id="description" cols="30"
-                    rows="3" style="resize:none;" required></textarea></div>
+                    rows="3" style="resize:none;" placeholder="this description will show in blog tiles."
+                    required></textarea></div>
             <div>
+            <div><label for="title">Cover image : </label> <input type="file" id="coverImage" name="coverImage" placeholder="add a cover image for your blog..." required></div>
                 <label for="category">Category : </label>
                 <select name="" id="category" required>
                     <option value="" disabled selected>-- Select an option --</option>
@@ -135,39 +146,41 @@
 
 
         document.querySelector("form").addEventListener('submit', async (event) => {
-            event.preventDefault();
-            try {
-                const editor = await tinymce.get('blog-post-editor');
-                if (editor && typeof editor.getContent === 'function') {
-                    console.log(editor.getContent());
-                    const response = await fetch('/dashbord/postBlog/saveBlog', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            title: document.getElementById('title').value,
-                            description: document.getElementById('description').value,
-                            category: document.getElementById('category').value,
-                            blogContent: editor.getContent(),
-                        })
-                    });
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const result = await response.json();
-                    if (result.success) {
-                        alert('blog post successfully.')
-                    }
-                } else {
-                    alert('internal server error.plz try again later.')
-                    console.error('Editor instance not found or does not have getContent method!');
-                }
-            } catch (error) {
-                console.error('Error submitting form:', error.message, error.stack);
-                alert('Error submitting form. Please try again later.');
+    event.preventDefault();
+    try {
+        const editor = await tinymce.get('blog-post-editor');
+        if (editor && typeof editor.getContent === 'function') {
+            console.log(editor.getContent());
+            
+            // Create a FormData object
+            const formData = new FormData();
+            formData.append('title', document.getElementById('title').value);
+            formData.append('description', document.getElementById('description').value);
+            formData.append('coverImage', document.getElementById('coverImage').files[0]); // Get the file
+            formData.append('category', document.getElementById('category').value);
+            formData.append('blogContent', editor.getContent());
+
+            const response = await fetch('/dashbord/postBlog/saveBlog', {
+                method: 'POST',
+                body: formData // Send the FormData object
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        });
+            const result = await response.json();
+            if (result.success) {
+                alert('Blog post successfully submitted.');
+            }
+        } else {
+            alert('Internal server error. Please try again later.');
+            console.error('Editor instance not found or does not have getContent method!');
+        }
+    } catch (error) {
+        console.error('Error submitting form:', error.message, error.stack);
+        alert('Error submitting form. Please try again later.');
+    }
+});
 
     </script>
 </body>
