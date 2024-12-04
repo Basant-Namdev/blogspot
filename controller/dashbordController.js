@@ -18,28 +18,33 @@ cloudinary.config({
 // renders dashbord page
 exports.dashbordRender = async (req, res) => {
   try {
-    const blogDetails = await blogModel.find()
-    myFunctions.renderView(res, 'dashbord', {blogs : blogDetails})
+    const blogDetails = await blogModel.find().populate('postBy', 'name profile').select('-blogContent');
+    myFunctions.renderView(req,res, 'dashbord', {blogs : blogDetails})
 
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: 'internal server error.pls try again later.' })
   }
 }
-// render my blogs 
-exports.myBlogs = (req, res) => {
+// renders myBlogs page
+exports.myBlogsRender = async (req, res) => {
   try {
-    myFunctions.renderView(res, 'dashbord', {})
+    const userId = new mongoose.Types.ObjectId(req.user);
+
+    const blogDetails = await blogModel.find({ postBy: userId }).populate('postBy', 'name profile');
+
+    myFunctions.renderView(req,res, 'myBlogs', {blogs : blogDetails})
 
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: 'internal server error.pls try again later.' })
   }
 }
+
 // render post blog page
 exports.postBlog = (req, res) => {
   try {
-    myFunctions.renderView(res, 'postBlog', { tinymce: process.env.TINYMCE })
+    myFunctions.renderView(req,res, 'postBlog', { tinymce: process.env.TINYMCE })
 
   } catch (error) {
     console.log(error);
@@ -107,7 +112,7 @@ exports.saveBlog = async (req, res) => {
 
     // Get the updated content
     const editorContent = $.html();
-    blog.postBy = req.user;
+    blog.postBy = new mongoose.Types.ObjectId(req.user);
     blog.title = req.body.title;
     blog.description = req.body.description;
     blog.category = req.body.category;
@@ -131,17 +136,31 @@ exports.openBlog = async(req, res) => {
   try {
     const blogId = req.params.id;
     const blog = await blogModel.findById(blogId).select('blogContent')    
-    myFunctions.renderView(res, 'openBlog', {blog : blog})
+    myFunctions.renderView(req,res, 'openBlog', {blog : blog})
     
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: 'internal server error.pls try again later.' })
   }
 }
+// DELETE API to delete a blog post by ID
+exports.deleteBlog =  async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const deletedBlog = await blogModel.findByIdAndDelete(id);
+      if (!deletedBlog) {
+          return res.status(404).send({ message: 'Blog not found' });
+      }
+      res.status(200).send({ message: 'Blog deleted successfully'});
+  } catch (error) {
+      res.status(500).send({ message: 'Error deleting blog', error });
+  }
+}
 // render reset password page
 exports.resetPassword = async (req, res) => {
   try {
-    myFunctions.renderView(res, 'resetPassword', {});
+    myFunctions.renderView(req,res, 'resetPassword', {});
 
   } catch (error) {
     console.log(error);
@@ -176,7 +195,7 @@ exports.passwordReset = async (req, res) => {
 exports.userDetails = async (req, res) => {
   try {
       const user = await users.findById(req.user);
-      myFunctions.renderView(res, 'userDetails', { user: user });
+      myFunctions.renderView(req,res, 'userDetails', { user: user });
   } catch (err) {
       console.log(err);
       res.status(500).send({ message: 'internal server error.pls try again later.' })
@@ -186,7 +205,7 @@ exports.userDetails = async (req, res) => {
 exports.editDetails = async (req, res) => {
   try {
       const user = await users.findById(req.user);
-      myFunctions.renderView(res, 'editDetails', { user: user });
+      myFunctions.renderView(req,res, 'editDetails', { user: user });
 
   } catch (err) {
       console.log(err);

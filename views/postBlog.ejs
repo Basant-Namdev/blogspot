@@ -62,6 +62,7 @@
         textarea::placeholder {
             color: black;
         }
+
     </style>
 </head>
 
@@ -147,10 +148,10 @@
 
         document.querySelector("form").addEventListener('submit', async (event) => {
     event.preventDefault();
+
     try {
         const editor = await tinymce.get('blog-post-editor');
         if (editor && typeof editor.getContent === 'function') {
-            console.log(editor.getContent());
             
             // Create a FormData object
             const formData = new FormData();
@@ -171,6 +172,8 @@
             const result = await response.json();
             if (result.success) {
                 alert('Blog post successfully submitted.');
+                document.getElementById('editor').reset();
+                editor.setContent('');
             }
         } else {
             alert('Internal server error. Please try again later.');

@@ -145,7 +145,7 @@ exports.initializePass = (passport) => {
 // render forget-password page
 exports.renderforgetPassword = async (req, res) => {
   try {
-    myFunctions.renderView(res, 'forgetPassword', {});
+    myFunctions.renderView(req,res, 'forgetPassword', {});
   } catch (err) {
     console.log(err);
     res.status(500).send({ message: 'internal server error.pls try again later.' })
@@ -194,7 +194,7 @@ exports.renderForgetResetPassword = async (req, res) => {
     const user = await users.findOne({ resetToken: token }).select('-password -dob -gender -resetToken -resetTokenExpiration -_id');
     console.log(user);
 
-    myFunctions.renderView(res, 'ForgetResetPassword', { user: user });
+    myFunctions.renderView(req,res, 'ForgetResetPassword', { user: user });
   } catch (err) {
     console.log(err);
     res.status(500).send({ message: 'internal server error.pls try again later.' })

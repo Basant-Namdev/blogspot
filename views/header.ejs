@@ -1,42 +1,55 @@
 <style>
     header {
-        margin-top: 1.2rem;
-        margin-bottom: 1rem;
-        background-color: #f2f2f2;
         box-shadow: 0rem 0rem 0.4rem;
-        display: flex;
+        position: sticky;
+        top: 0px;
+        background: linear-gradient(to right, #2c3e50, #af4c4c);
         padding: 1rem;
-    }
-
-    #other-opotions>a {
-        text-decoration: none;
-        transition: all ease .3s;
-    }
-
-    #other-opotions {
         display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 5;
+    }
+
+    #other-options>a {
+        color: white;
+        text-decoration: none;
+    }
+
+    #other-options {
+        display: flex; 
         justify-content: space-evenly;
-        width: 100%;
+        align-items: center;
+        width: 50%;
         cursor: pointer;
     }
 
-    #other-opotions>a:hover {
-        scale: 1.2;
+    #other-options>a:hover {
+        text-decoration: underline;
     }
 
     #logo {
-        width: 30%;
+        color: #fff;
+        font-size: 24px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    #profile{
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
     }
 </style>
 
 <header>
-    <div id="logo"></div>
-    <div id="other-opotions">
+    <div id="logo">BlogSpot</div>
+    <div id="other-options">
         <a href="/dashbord">Dashbord</a>
         <a href="/dashbord/myBlogs">My Blogs</a>
         <a href="/dashbord/postBlog">Post a blog</a>
         <a href="/dashbord/userDetails">User Details</a>
         <a href="/dashbord/resetPassword">Reset Password</a>
         <a href="/dashbord/logout">Logout</a>
+        <img src="<%=userProfile.profile%>" alt="" id="profile">
     </div>
 </header>

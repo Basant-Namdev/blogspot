@@ -21,7 +21,7 @@
                 <li><a href="#">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#blogPosts">Blog Posts</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="#contact">Contact</a></li>
                 <li><a href="#" id="login-register">login / register</a></li>
             </ul>
         </nav>
@@ -72,22 +72,25 @@
         </div>
     </section>
 
-
     <!-- Blog Previews Section -->
     <section class="blog-previews" id="blogPosts">
         <div class="container">
             <h2 style="padding: 1rem;">Recent Blog Posts</h2>
             <div class="blogs">
                 <% for (let blog of blogs) { %>
-                <div class="blog">
-                    <% if(blog.coverImage){%>
-                    <img src="<%= blog.coverImage %>" alt="" class="coverImage">
-                    <%}%>
-                    <h3><%= blog.title %></h3>
-                    <p><%= blog.description %></p>
-                    <a href="#" onclick="alert('login required')">Read More</a>
-                </div>
-                <% } %>
+                    <div class="blog">
+                        <% if(blog.coverImage){%>
+                            <img src="<%= blog.coverImage %>" alt="" class="coverImage">
+                            <%}%>
+                                <h3>
+                                    <%= blog.title %>
+                                </h3>
+                                <p>
+                                    <%= blog.description %>
+                                </p>
+                                <a href="#" onclick="alert('login required')">Read More</a>
+                    </div>
+                    <% } %>
             </div>
         </div>
     </section>
@@ -96,29 +99,75 @@
     <section class="about" id="about">
         <div class="container">
             <h2>About BlogSpot</h2>
-            <p>BlogSpot is a dynamic platform for creative thinkers, aspiring bloggers, and passionate content creators. Our mission is simple: to empower you with the tools, insights, and inspiration you need to succeed in the world of blogging. Whether you're just starting your journey or looking to grow your existing blog, BlogSpot is here to guide you every step of the way.</p>
-    
-            <p>We believe that blogging is not just about writing — it’s about telling a story, building a community, and connecting with an audience. At BlogSpot, we offer a variety of resources, including practical tips on content creation, expert advice on digital marketing, and real-life success stories from bloggers who’ve made an impact.</p>
-    
+            <p>BlogSpot is a dynamic platform for creative thinkers, aspiring bloggers, and passionate content creators.
+                Our mission is simple: to empower you with the tools, insights, and inspiration you need to succeed in
+                the world of blogging. Whether you're just starting your journey or looking to grow your existing blog,
+                BlogSpot is here to guide you every step of the way.</p>
+
+            <p>We believe that blogging is not just about writing — it’s about telling a story, building a community,
+                and connecting with an audience. At BlogSpot, we offer a variety of resources, including practical tips
+                on content creation, expert advice on digital marketing, and real-life success stories from bloggers
+                who’ve made an impact.</p>
+
             <h3>Our Mission</h3>
-            <p>BlogSpot was created with one goal in mind: to provide bloggers with the knowledge and resources they need to thrive. We are passionate about helping creators find their voice, share their ideas, and build an engaged audience. Our platform offers a space for both beginners and seasoned bloggers to learn, grow, and collaborate.</p>
-    
+            <p>BlogSpot was created with one goal in mind: to provide bloggers with the knowledge and resources they
+                need to thrive. We are passionate about helping creators find their voice, share their ideas, and build
+                an engaged audience. Our platform offers a space for both beginners and seasoned bloggers to learn,
+                grow, and collaborate.</p>
+
             <h3>What We Offer</h3>
             <ul>
-                <li><strong>Expert Advice:</strong> Get access to articles, tutorials, and videos from experienced bloggers and content creators.</li>
-                <li><strong>Content Creation Tips:</strong> Learn how to create compelling, high-quality content that resonates with your audience.</li>
-                <li><strong>Blogging Community:</strong> Join a vibrant community of bloggers where you can share experiences, get feedback, and collaborate on new projects.</li>
-                <li><strong>SEO & Digital Marketing:</strong> Discover the best practices for SEO, social media marketing, and growing your blog's reach.</li>
-                <li><strong>Inspiration & Motivation:</strong> Read success stories from fellow bloggers who have turned their passion into a profitable business.</li>
+                <li><strong>Expert Advice:</strong> Get access to articles, tutorials, and videos from experienced
+                    bloggers and content creators.</li>
+                <li><strong>Content Creation Tips:</strong> Learn how to create compelling, high-quality content that
+                    resonates with your audience.</li>
+                <li><strong>Blogging Community:</strong> Join a vibrant community of bloggers where you can share
+                    experiences, get feedback, and collaborate on new projects.</li>
+                <li><strong>SEO & Digital Marketing:</strong> Discover the best practices for SEO, social media
+                    marketing, and growing your blog's reach.</li>
+                <li><strong>Inspiration & Motivation:</strong> Read success stories from fellow bloggers who have turned
+                    their passion into a profitable business.</li>
             </ul>
-    
+
             <h3>Join the BlogSpot Community</h3>
-            <p>Blogging is not a solitary activity — it’s about connection, conversation, and collaboration. At BlogSpot, we foster a community where bloggers of all levels can support each other. Whether you're looking for advice, inspiration, or just someone to share your blogging journey with, you’ll find it here.</p>
-    
-            <p>So, why wait? Join us today and become a part of a growing community of passionate bloggers. Let's explore the world of blogging together, and watch your ideas flourish!</p>
+            <p>Blogging is not a solitary activity — it’s about connection, conversation, and collaboration. At
+                BlogSpot, we foster a community where bloggers of all levels can support each other. Whether you're
+                looking for advice, inspiration, or just someone to share your blogging journey with, you’ll find it
+                here.</p>
+
+            <p>So, why wait? Join us today and become a part of a growing community of passionate bloggers. Let's
+                explore the world of blogging together, and watch your ideas flourish!</p>
         </div>
     </section>
-    
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            <p style="text-align: center;">We'd love to hear from you! Whether you have questions, feedback, or need
+                support, we're here to help.</p>
+
+            <div class="contact-info">
+                <div>
+                    <p><strong>📧 Email:</strong> <a href="mailto:contact@yourcompany.com">contact@yourcompany.com</a>
+                    </p>
+                    <p><strong>📞 Phone:</strong> +1 (234) 567-890</p>
+                    <p><strong>📍 Address:</strong> 123 Business St, City, Country</p>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <p><strong>Why Contact Us?</strong></p>
+                <ul>
+                    <li><strong>Support</strong>: We’re available to assist with any questions or issues you might have.
+                    </li>
+                    <li><strong>Partnerships</strong>: Let’s collaborate! Reach out for business opportunities.</li>
+                    <li><strong>Feedback</strong>: We value your thoughts and suggestions. Help us improve!</li>
+                </ul>
+            </div>
+        </div>
+
+    </section>
 
     <!-- Footer -->
     <footer>
