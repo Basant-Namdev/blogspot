@@ -47,7 +47,6 @@ const errorMessage = document.getElementById('error-message');
 // creating new user
 signupForm.addEventListener('submit', async (e) => {
     e.preventDefault(); // Prevent default form submission
-
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
@@ -77,6 +76,7 @@ signupForm.addEventListener('submit', async (e) => {
         return; // Stop further execution
     }
 
+    document.getElementById('loader-container-container').style.display = 'block'
     // If all validation passes, proceed to create user
     try {
         const response = await fetch('/signUp', {
@@ -90,6 +90,8 @@ signupForm.addEventListener('submit', async (e) => {
                 password: password
             })
         });
+        document.getElementById('loader-container-container').style.display = 'none'
+
         const result = await response.json(); // Parse response as JSON
         if (response.status === 400) {
             // This means the email is already in use
@@ -102,6 +104,7 @@ signupForm.addEventListener('submit', async (e) => {
             alert("Something went wrong! Try again later.");
         }
     } catch (error) {
+        document.getElementById('loader-container-container').style.display = 'none'
         alert("Something went wrong! Try again later.");
         console.error('Error submitting form:', error);
     }
@@ -147,6 +150,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // Login form error message
 loginForm.addEventListener('submit', async function (event) {
     event.preventDefault(); // prevent default form submission
+    document.getElementById('loader-container-container').style.display = 'block'
     try {
         const usernameInput = document.querySelector('#loginEmail');
         const passwordInput = document.querySelector('#loginPassword');
@@ -160,6 +164,7 @@ loginForm.addEventListener('submit', async function (event) {
                 password: passwordInput.value
             })
         });
+        document.getElementById('loader-container-container').style.display = 'none'
         const result = await response.json(); // parse response as JSON
         if (!result.success) {
             document.getElementById('login-auth-failed').innerHTML = "*Invalid username or password!";
@@ -168,7 +173,8 @@ loginForm.addEventListener('submit', async function (event) {
             window.location.href = result.redirectUrl;
         }
     } catch (error) {
-        popUp("Something went wrong! try again later.");
+        document.getElementById('loader-container-container').style.display = 'block'
+        alert("Something went wrong! try again later.");
         console.error('Error submitting form:', error);
     }
 });

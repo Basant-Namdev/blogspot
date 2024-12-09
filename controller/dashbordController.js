@@ -18,7 +18,7 @@ cloudinary.config({
 // renders dashbord page
 exports.dashbordRender = async (req, res) => {
   try {
-    const blogDetails = await blogModel.find().populate('postBy', 'name profile').select('-blogContent');
+    const blogDetails = await blogModel.find().populate('postBy', 'name profile').sort({ createdAt: -1 }).select('-blogContent');
     myFunctions.renderView(req,res, 'dashbord', {blogs : blogDetails})
 
   } catch (error) {
@@ -31,7 +31,7 @@ exports.myBlogsRender = async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user);
 
-    const blogDetails = await blogModel.find({ postBy: userId }).populate('postBy', 'name profile');
+    const blogDetails = await blogModel.find({ postBy: userId }).populate('postBy', 'name profile').sort({ createdAt: -1 });
 
     myFunctions.renderView(req,res, 'myBlogs', {blogs : blogDetails})
 
