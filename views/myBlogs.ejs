@@ -101,6 +101,12 @@
             width: 160px;
             height: 160px;
         }
+
+        .icon {
+            margin: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
     </style>
     <script src="https://kit.fontawesome.com/126cda3aca.js" crossorigin="anonymous"></script>
 </head>
@@ -131,8 +137,10 @@
                                 </div>
                             </div>
                         </a>
-                        <span><i class="fa-solid fa-trash" style="margin: 1rem;
-    font-size: 1.5rem;cursor: pointer;" onclick="deleteBlog('<%= blog._id%>',this)"></i></span>
+                        <span style="display: flex;flex-direction: column;">
+                            <a href="/dashbord/editblog/<%= blog._id%>" style="color: black;"><i class="fa-solid fa-pencil icon"></i></a>
+                            <i class=" fa-solid fa-trash icon" onclick="deleteBlog('<%= blog._id%>',this)"></i>
+                        </span>
                     </section>
                     <% } %>
             </div>

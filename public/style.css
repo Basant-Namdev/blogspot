@@ -132,6 +132,8 @@ input[type="checkbox"]:checked+.login+.signup {
     top: 17rem;
     left: 21rem;
     cursor: pointer;
+    z-index: 7;
+    color: black;
 }
 
 .fa-eye {

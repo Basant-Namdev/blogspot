@@ -71,21 +71,30 @@
             <h1 style="text-align: center; color: white; margin: .8rem;">Post a blog</h1>
             <div id="form-cont">
                 <div><label for="title">Title : </label> <input type="text" id="title"
-                        placeholder="add a title for your blog..." required></div>
+                        placeholder="add a title for your blog..."
+                        value="<%= typeof blog !== 'undefined' && blog.title ? blog.title : '' %>" required></div>
                 <div><label for="description">Description : </label> <textarea name="description" id="description"
                         cols="30" rows="3" style="resize:none;" placeholder="this description will show in blog tiles."
-                        required></textarea></div>
+                        required><%= typeof blog !== 'undefined' && blog.description ? blog.description : '' %></textarea>
+                </div>
                 <div>
                     <div><label for="title">Cover image : </label> <input type="file" id="coverImage" name="coverImage"
-                            placeholder="add a cover image for your blog..." required></div>
-                    <label for="category">Category : </label>
-                    <select name="" id="category" required>
-                        <option value="" disabled selected>-- Select an option --</option>
-                        <option value="travel">travel</option>
-                        <option value="entertainment">entertainment</option>
-                        <option value="education">education</option>
-                        <option value="finance">finance</option>
-                        <option value="health & fitness">health & fitness</option>
+                            placeholder="add a cover image for your blog..."  <%= typeof blog === 'undefined' ? 'required' : '' %>>>
+                    </div>
+                    <label for="category">Category:</label>
+                    <select name="category" id="category" required>
+                        <option value="" disabled <%=typeof blog==='undefined' || !blog.category ? 'selected' : '' %>>--
+                            Select an option --</option>
+                        <option value="travel" <%=typeof blog !=='undefined' && blog.category==='travel' ? 'selected'
+                            : '' %>>Travel</option>
+                        <option value="entertainment" <%=typeof blog !=='undefined' && blog.category==='entertainment'
+                            ? 'selected' : '' %>>Entertainment</option>
+                        <option value="education" <%=typeof blog !=='undefined' && blog.category==='education'
+                            ? 'selected' : '' %>>Education</option>
+                        <option value="finance" <%=typeof blog !=='undefined' && blog.category==='finance' ? 'selected'
+                            : '' %>>Finance</option>
+                        <option value="health & fitness" <%=typeof blog !=='undefined' &&
+                            blog.category==='health & fitness' ? 'selected' : '' %>>Health & Fitness</option>
                     </select>
                 </div>
             </div>
@@ -96,6 +105,10 @@
 
         <script src="https://cdn.tiny.cloud/1/<%= tinymce %>/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
         <script>
+            const url = window.location.href;
+            const segments = url.split('/');
+            const blogId = segments[segments.length - 1];
+            const objectIdRegex = /^[0-9a-fA-F]{24}$/;
 
             tinymce.init({
                 selector: '#blog-post-editor',
@@ -142,9 +155,12 @@
 
                     input.click();
                 },
-
+                setup: function (editor) {
+                    editor.on('init', function () {
+                        editor.setContent(`<%- typeof blog !== 'undefined' && blog.blogContent ? blog.blogContent : '' %>`);
+                    });
+                }
             });
-
 
             document.querySelector("form").addEventListener('submit', async (event) => {
                 event.preventDefault();
@@ -160,31 +176,34 @@
                         formData.append('coverImage', document.getElementById('coverImage').files[0]); // Get the file
                         formData.append('category', document.getElementById('category').value);
                         formData.append('blogContent', editor.getContent());
+                        if (objectIdRegex.test(blogId)) {
+                            formData.append('blogId', blogId);
+                        }
 
-                        const response = await fetch('/dashbord/postBlog/saveBlog', {
-                            method: 'POST',
-                            body: formData // Send the FormData object
-                        });
+
+                            const response = await fetch('/dashbord/postBlog/saveBlog', {
+                                method: 'POST',
+                                body: formData // Send the FormData object
+                            });
+                            document.getElementById('loader-container-container').style.display = "none"
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            const result = await response.json();
+                            if (result.success) {
+                                alert('Blog post successfully submitted.');
+                                window.location.href = "/dashbord/myBlogs";
+                            }
+                        } else {
+                            alert('Internal server error. Please try again later.');
+                            console.error('Editor instance not found or does not have getContent method!');
+                        }
+                    } catch (error) {
                         document.getElementById('loader-container-container').style.display = "none"
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        const result = await response.json();
-                        if (result.success) {
-                            alert('Blog post successfully submitted.');
-                            document.getElementById('editor').reset();
-                            editor.setContent('');
-                        }
-                    } else {
-                        alert('Internal server error. Please try again later.');
-                        console.error('Editor instance not found or does not have getContent method!');
+                        console.error('Error submitting form:', error.message, error.stack);
+                        alert('Error submitting form. Please try again later.');
                     }
-                } catch (error) {
-                    document.getElementById('loader-container-container').style.display = "none"
-                    console.error('Error submitting form:', error.message, error.stack);
-                    alert('Error submitting form. Please try again later.');
-                }
-            });
+                });
 
         </script>
 </body>

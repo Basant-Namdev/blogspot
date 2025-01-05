@@ -42,10 +42,14 @@ exports.myBlogsRender = async (req, res) => {
 }
 
 // render post blog page
-exports.postBlog = (req, res) => {
+exports.postBlog = async (req, res) => {
   try {
-    myFunctions.renderView(req,res, 'postBlog', { tinymce: process.env.TINYMCE })
-
+    if (req.params.id) {
+      const  blog = await blogModel.findById(req.params.id);
+      myFunctions.renderView(req,res, 'postBlog', { tinymce: process.env.TINYMCE , blog : blog })
+    } else {
+      myFunctions.renderView(req,res, 'postBlog', { tinymce: process.env.TINYMCE })
+    }
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: 'internal server error.pls try again later.' })
@@ -54,7 +58,12 @@ exports.postBlog = (req, res) => {
 // this is to post the blog
 exports.saveBlog = async (req, res) => {
   try {
-    const blog = new blogModel();
+    if (req.body.blogId) {
+      var blog = await blogModel.findById(req.body.blogId);
+    } else {
+      var blog = new blogModel();      
+    }
+
     const content = req.body.blogContent;
     let file,filepath;
     if (req.file) {

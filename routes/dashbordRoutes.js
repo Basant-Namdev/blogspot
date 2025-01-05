@@ -11,6 +11,7 @@ router
     .get('/',homeController.isAuth,dashbordController.dashbordRender)
     .get('/myBlogs',dashbordController.myBlogsRender)
     .get('/postBlog',dashbordController.postBlog)
+    .get('/editBlog/:id',dashbordController.postBlog)
     .get('/userDetails',dashbordController.userDetails)
     .get('/editDetails',dashbordController.editDetails)
     .post('/editDetails/save', upload.single('image') ,dashbordController.saveDetails)
