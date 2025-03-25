@@ -20,11 +20,8 @@
         #blogs-container {
             display: flex;
             flex-wrap: wrap;
-            /* Allow items to wrap to the next line */
             justify-content: center;
-            /* Center items horizontally */
             padding: 2rem;
-            /* Add padding around the container */
             flex-direction: column;
         }
 
@@ -34,8 +31,8 @@
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             transition: all ease .2s;
+            margin: 1rem;
         }
-
 
         .blog:hover {
             transform: scale(1.01);
@@ -45,17 +42,6 @@
         a {
             text-decoration: none;
         }
-
-        /* Media Queries for Responsiveness */
-        @media (max-width: 768px) {
-            .blog {
-                width: 100%;
-                /* Full width on smaller screens */
-                height: auto;
-                /* Allow height to adjust based on content */
-            }
-        }
-
 
         .blog-image {
             width: 160px;
@@ -101,37 +87,92 @@
             width: 160px;
             height: 160px;
         }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .blog {
+                flex-direction: column;
+            }
+
+            .blog-image-wrapper {
+                width: 100%;
+                height: auto;
+            }
+
+            .blog-image {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+            }
+
+            .blog-title {
+                font-size: 1.2rem;
+            }
+
+            .blog-description {
+                font-size: 0.9rem;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 3;
+                line-clamp: 3;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .blog {
+                flex-direction: column;
+            }
+
+            .blog-image-wrapper {
+                width: 100%;
+                height: auto;
+            }
+
+            .blog-image {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+            }
+
+            .blog-title {
+                font-size: 1rem;
+            }
+
+            .blog-description {
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 
 <body>
     <%- include('./header.ejs') %>
-        <div id="blogs-container">
-            <% for(let blog of blogs){ %>
-
-                <section style="display: flex;margin: 1rem;">
-                    <a href="/dashbord/<%= blog._id %>" target="" rel="noopener noreferrer"
-                        style="text-decoration: none;">
-                        <div class="blog">
-                            <div class="blog-image-wrapper">
-                                <img src="<%= blog.coverImage%>" alt="Cover Image" class="blog-image">
-                            </div>
-                            <div class="blog-content">
-                                <div class="blog-title-wrapper">
-                                    <img src="<%= blog.postBy.profile %>" alt="" class="cover-icon">
-                                    <h2 class="blog-title">
-                                        <%=blog.title%>
-                                    </h2>
-                                </div><br>
-                                <p class="blog-description">
-                                    <%=blog.description%>
-                                </p>
-                            </div>
+    <div id="blogs-container">
+        <% for(let blog of blogs){ %>
+            <section style="display: flex;margin: 1rem;">
+                <a href="/dashbord/<%= blog._id %>" target="" rel="noopener noreferrer"
+                    style="text-decoration: none; flex: auto;">
+                    <div class="blog">
+                        <div class="blog-image-wrapper">
+                            <img src="<%= blog.coverImage%>" alt="Cover Image" class="blog-image">
                         </div>
-                    </a>
-                </section>
-                <% } %>
-        </div>
+                        <div class="blog-content">
+                            <div class="blog-title-wrapper">
+                                <img src="<%= blog.postBy.profile %>" alt="" class="cover-icon">
+                                <h2 class="blog-title">
+                                    <%=blog.title%>
+                                </h2>
+                            </div><br>
+                            <p class="blog-description">
+                                <%=blog.description%>
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </section>
+        <% } %>
+    </div>
 
 </body>
 

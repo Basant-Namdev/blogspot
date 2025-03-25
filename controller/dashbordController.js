@@ -124,7 +124,6 @@ exports.saveBlog = async (req, res) => {
     blog.postBy = new mongoose.Types.ObjectId(req.user);
     blog.title = req.body.title;
     blog.description = req.body.description;
-    blog.category = req.body.category;
     blog.blogContent = editorContent;
     blog.save()
       .then((data) => {

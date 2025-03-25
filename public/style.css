@@ -27,7 +27,7 @@ input[type="checkbox"] {
 }
 
 .login,
-.signup {
+.signup,.login-bt,.signup-bt {
     padding: 2rem;
     opacity: 0;
     transform: translateY(20px);
@@ -84,7 +84,7 @@ span {
     margin-top: 0.5rem;
 }
 
-.signup {
+.signup,.signup-bt {
     display: none;
 }
 
@@ -129,7 +129,7 @@ input[type="checkbox"]:checked+.login+.signup {
 
 .eye {
     position: absolute;
-    top: 17rem;
+    top: 15rem;
     left: 21rem;
     cursor: pointer;
     z-index: 7;
@@ -141,7 +141,7 @@ input[type="checkbox"]:checked+.login+.signup {
 }
 
 #loginPass>.eye {
-    top: 9.6rem;
+    top: 11rem;
     left: 21rem;
 }
 
@@ -175,7 +175,7 @@ header nav .logo a {
 header nav ul {
     list-style-type: none;
     display: flex;
-    width: 50%;
+    /* width: 50%; */
     justify-content: space-evenly;
 }
 
@@ -201,6 +201,7 @@ header nav ul li a:hover {
     border-radius: 2rem;
     padding: 0.7rem;
     font-weight: bold;
+    width: fit-content;
 }
 
 /* Hero section styling */
@@ -260,7 +261,8 @@ header nav ul li a:hover {
     overflow: auto;
     transition: all ease .3s;
 }
-.blog:hover{
+
+.blog:hover {
     scale: 1.04;
 }
 
@@ -354,10 +356,11 @@ footer .social-links a {
     margin-bottom: 0;
 }
 
-.coverImage{
+.coverImage {
     width: 18rem;
     height: 12rem;
 }
+
 /* contact part */
 .container {
     max-width: 1200px;
@@ -372,14 +375,14 @@ h2 {
     margin-bottom: 30px;
 }
 
-.contact-info{
+.contact-info {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 30px;
 }
 
-.contact-info div{
+.contact-info div {
     width: 100%;
     max-width: 48%;
     font-size: 16px;
@@ -388,11 +391,36 @@ h2 {
 }
 
 
-.contact-info div a{
+.contact-info div a {
     color: #007bff;
     text-decoration: none;
 }
 
-.contact-info div a:hover{
+.contact-info div a:hover {
     text-decoration: underline;
 }
+
+@media screen and (max-width: 991px) {
+    .blog-previews .blog {
+        width: min-content;
+        height: auto;
+    }
+
+    .blog-previews .blogs {
+        display: flex;
+        justify-content: center;
+    }
+}
+@media screen and (max-width: 880px) {
+    .hero-content{
+        width: 100%;
+    }
+    .main{
+        display: none;
+    }
+    .hero {
+        display: flex;
+        justify-content: center;
+    }
+}
+

@@ -81,21 +81,6 @@
                     <div><label for="title">Cover image : </label> <input type="file" id="coverImage" name="coverImage"
                             placeholder="add a cover image for your blog..."  <%= typeof blog === 'undefined' ? 'required' : '' %>>>
                     </div>
-                    <label for="category">Category:</label>
-                    <select name="category" id="category" required>
-                        <option value="" disabled <%=typeof blog==='undefined' || !blog.category ? 'selected' : '' %>>--
-                            Select an option --</option>
-                        <option value="travel" <%=typeof blog !=='undefined' && blog.category==='travel' ? 'selected'
-                            : '' %>>Travel</option>
-                        <option value="entertainment" <%=typeof blog !=='undefined' && blog.category==='entertainment'
-                            ? 'selected' : '' %>>Entertainment</option>
-                        <option value="education" <%=typeof blog !=='undefined' && blog.category==='education'
-                            ? 'selected' : '' %>>Education</option>
-                        <option value="finance" <%=typeof blog !=='undefined' && blog.category==='finance' ? 'selected'
-                            : '' %>>Finance</option>
-                        <option value="health & fitness" <%=typeof blog !=='undefined' &&
-                            blog.category==='health & fitness' ? 'selected' : '' %>>Health & Fitness</option>
-                    </select>
                 </div>
             </div>
             <div id="blog-post-editor" name="content"></div>
@@ -174,7 +159,6 @@
                         formData.append('title', document.getElementById('title').value);
                         formData.append('description', document.getElementById('description').value);
                         formData.append('coverImage', document.getElementById('coverImage').files[0]); // Get the file
-                        formData.append('category', document.getElementById('category').value);
                         formData.append('blogContent', editor.getContent());
                         if (objectIdRegex.test(blogId)) {
                             formData.append('blogId', blogId);

@@ -192,7 +192,7 @@ exports.renderForgetResetPassword = async (req, res) => {
   try {
     const token = req.params.token;
     const user = await users.findOne({ resetToken: token }).select('-password -dob -gender -resetToken -resetTokenExpiration -_id');
-    console.log(user);
+    console.log(user,token);
 
     myFunctions.renderView(req,res, 'ForgetResetPassword', { user: user });
   } catch (err) {

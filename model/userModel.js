@@ -17,7 +17,6 @@ const blogSchema = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     coverImage: { type: String, required: true },
-    category: { type: String, required: true },
     blogContent: { type: String, required: true },
 }, {
     timestamps: true
