@@ -174,7 +174,7 @@ exports.forgetPassword = async (req, res) => {
       from: process.env.GMAIL,
       to: username,
       subject: 'Reset Password',
-      text: `Click the following link to reset your password: http://localhost:3000/reset-password/${token} . This link is valid only for 15 min.`
+      text: `Click the following link to reset your password: ${process.env.PRODUCTION_URL}/reset-password/${token}. This link is valid only for 15 min.`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
