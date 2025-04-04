@@ -21,7 +21,6 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            padding: 2rem;
             flex-direction: column;
         }
 
@@ -31,7 +30,6 @@
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             transition: all ease .2s;
-            margin: 1rem;
         }
 
         .blog:hover {
@@ -50,7 +48,7 @@
         }
 
         .blog-content {
-            padding: .7rem;
+            padding: 12px 0px 0px 10px;
         }
 
         .blog-title {
@@ -63,6 +61,10 @@
         .blog-description {
             font-size: 1.1rem;
             color: #555;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
         }
 
         /* Blog Title and Cover Icon */
@@ -143,36 +145,41 @@
                 font-size: 0.8rem;
             }
         }
+        @media (width > 768px) {
+            .blog-image{
+               padding:  12px 0px 12px 10px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <%- include('./header.ejs') %>
-    <div id="blogs-container">
-        <% for(let blog of blogs){ %>
-            <section style="display: flex;margin: 1rem;">
-                <a href="/dashbord/<%= blog._id %>" target="" rel="noopener noreferrer"
-                    style="text-decoration: none; flex: auto;">
-                    <div class="blog">
-                        <div class="blog-image-wrapper">
-                            <img src="<%= blog.coverImage%>" alt="Cover Image" class="blog-image">
+        <div id="blogs-container">
+            <% for(let blog of blogs){ %>
+                <section style="display: flex;margin: 1rem;">
+                    <a href="/dashbord/<%= blog._id %>" target="" rel="noopener noreferrer"
+                        style="text-decoration: none; flex: auto;">
+                        <div class="blog">
+                            <div class="blog-image-wrapper">
+                                <img src="<%= blog.coverImage%>" alt="Cover Image" class="blog-image">
+                            </div>
+                            <div class="blog-content">
+                                <div class="blog-title-wrapper">
+                                    <img src="<%= blog.postBy.profile %>" alt="" class="cover-icon">
+                                    <h2 class="blog-title">
+                                        <%=blog.title%>
+                                    </h2>
+                                </div><br>
+                                <p class="blog-description">
+                                    <%=blog.description%>
+                                </p>
+                            </div>
                         </div>
-                        <div class="blog-content">
-                            <div class="blog-title-wrapper">
-                                <img src="<%= blog.postBy.profile %>" alt="" class="cover-icon">
-                                <h2 class="blog-title">
-                                    <%=blog.title%>
-                                </h2>
-                            </div><br>
-                            <p class="blog-description">
-                                <%=blog.description%>
-                            </p>
-                        </div>
-                    </div>
-                </a>
-            </section>
-        <% } %>
-    </div>
+                    </a>
+                </section>
+                <% } %>
+        </div>
 
 </body>
 

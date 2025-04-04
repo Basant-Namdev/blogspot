@@ -21,7 +21,6 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            padding: 2rem;
             flex-direction: column;
         }
 
@@ -31,7 +30,6 @@
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             transition: all ease .2s;
-            margin: 1rem;
         }
 
         .blog:hover {
@@ -50,7 +48,7 @@
         }
 
         .blog-content {
-            padding: .7rem;
+            padding: 12px 0px 0px 10px;
         }
 
         .blog-title {
@@ -97,6 +95,8 @@
             margin: 1rem;
             font-size: 1.5rem;
             cursor: pointer;
+            font-size: large;
+            margin: 10px;
         }
 
         /* Media Queries for Responsiveness */
@@ -149,6 +149,11 @@
                 font-size: 0.8rem;
             }
         }
+        @media (width > 768px) {
+            .blog-image{
+               padding:  12px 0px 12px 10px;
+            }
+        }
     </style>
     <script src="https://kit.fontawesome.com/126cda3aca.js" crossorigin="anonymous"></script>
 </head>
@@ -159,7 +164,7 @@
             <div id="blogs-container">
                 <% for(let blog of blogs){ %>
 
-                    <section style="display: flex; margin: 1rem;">
+                    <section style="display: flex; margin: 14px 10px 0px 18px">
                         <a href="/dashbord/<%= blog._id %>" target="" rel="noopener noreferrer"
                             style="text-decoration: none;flex: auto;">
                             <div class="blog">

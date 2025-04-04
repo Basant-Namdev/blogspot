@@ -130,7 +130,7 @@ input[type="checkbox"]:checked+.login+.signup {
 .eye {
     position: absolute;
     top: 15rem;
-    left: 21rem;
+    left: 84%;
     cursor: pointer;
     z-index: 7;
     color: black;
@@ -142,7 +142,7 @@ input[type="checkbox"]:checked+.login+.signup {
 
 #loginPass>.eye {
     top: 11rem;
-    left: 21rem;
+    left: 84%;
 }
 
 #forgot-password {
@@ -191,9 +191,8 @@ header nav ul li a {
     transition: all ease .5s;
 }
 
-header nav ul li a:hover {
+header nav ul li a:focus-visible {
     color: rgb(0, 200, 255);
-    scale: 1.5;
 }
 
 #login-register {
@@ -410,6 +409,7 @@ h2 {
         display: flex;
         justify-content: center;
     }
+    
 }
 @media screen and (max-width: 880px) {
     .hero-content{
@@ -421,6 +421,17 @@ h2 {
     .hero {
         display: flex;
         justify-content: center;
+    }
+}
+@media screen and (max-width: 450px) {
+    .hero-content{
+        padding: 3rem;
+    }
+    #loginPass>.eye {
+        left: 81%;
+    }
+    .eye {
+        left: 81%;
     }
 }
 

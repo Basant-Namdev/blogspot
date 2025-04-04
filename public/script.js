@@ -196,12 +196,12 @@ function togglePasswordVisibility(eyeIcon) {
     if (passwordInput) {
         if (passwordInput.type === "password") {
             passwordInput.type = "text";
-            eyeOpen.style.display = "none";
-            eyeClosed.style.display = "inline-block";
-        } else {
-            passwordInput.type = "password";
             eyeOpen.style.display = "inline-block";
             eyeClosed.style.display = "none";
+        } else {
+            passwordInput.type = "password";
+            eyeOpen.style.display = "none";
+            eyeClosed.style.display = "inline-block";
         }
     }
 }
