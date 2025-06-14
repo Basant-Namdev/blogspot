@@ -7,6 +7,13 @@ const users = model.users;
 const cloudinary = require('cloudinary').v2;
 const cheerio = require('cheerio');
 const bcrypt = require('bcrypt');
+const mime = require('mime-types');
+const { JSDOM } = require('jsdom');
+const createDOMPurify = require('dompurify');
+
+// Setup DOMPurify with JSDOM
+const window = new JSDOM('').window;
+const DOMPurify = createDOMPurify(window);
 
 require('dotenv').config();
 // cloudinary Configuration
@@ -58,87 +65,86 @@ exports.postBlog = async (req, res) => {
 // this is to post the blog
 exports.saveBlog = async (req, res) => {
   try {
+    let blog;
     if (req.body.blogId) {
-      var blog = await blogModel.findById(req.body.blogId);
+      blog = await blogModel.findById(req.body.blogId);
     } else {
-      var blog = new blogModel();      
+      blog = new blogModel();
     }
 
-    const content = req.body.blogContent;
-    let file,filepath;
-    if (req.file) {
-      file = req.file;
-    }
+    let filepath;
+    const file = req.file;
+
+    // Check cover image MIME type
     if (file) {
-        // Upload to cloudinary
-        await cloudinary.uploader.upload(req.file.path,{
-          folder: 'blogspot/blogs',
-        }, (err, result) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).json({
-                    message: 'internal server error.pls try again later.'
-                })
-            } else {
-                filepath = result.url;
-                blog.coverImage = filepath;
-            }
-        })
+      const mimeType = mime.lookup(file.originalname);
+      if (!mimeType?.startsWith('image/')) {
+        return res.status(400).json({ success: false, message: 'Only image files are allowed.' });
+      }
+
+      // Upload cover image to Cloudinary
+      const result = await cloudinary.uploader.upload(file.path, {
+        folder: 'blogspot/blogs',
+      });
+
+      filepath = result.secure_url;
+      blog.coverImage = filepath;
     }
-    // Load the content into Cheerio
-    const $ = cheerio.load(content);
 
-    // Extract images from the editor content
-    const images = $('img').map((index, img) => $(img).attr('src')).get();
+    // Sanitize blog content
+    const rawContent = req.body.blogContent || '';
+    const cleanContent = DOMPurify.sanitize(rawContent, {
+      USE_PROFILES: { html: true },
+      ADD_ATTR: ['style', 'class'],
+    });
 
-    // Upload images to cloudinary
+    // Load sanitized HTML into Cheerio
+    const $ = cheerio.load(cleanContent);
+
+    // Extract <img> sources
+    const images = $('img').map((i, el) => $(el).attr('src')).get();
+
+    // Upload embedded images to Cloudinary and update URLs
     if (images.length > 0) {
       const uploadedImages = await Promise.all(
-        images.map((image) => {
-          return cloudinary.uploader.upload(image, {
-            folder: 'blogspot/blogs',
-          }, async (err) => {
-            if (err) {
-              console.log(err);
-              return res.status(500).json({
-                success: false
-              })
-            }
-          });
+        images.map(async (imgSrc) => {
+          try {
+            const uploaded = await cloudinary.uploader.upload(imgSrc, {
+              folder: 'blogspot/blogs',
+            });
+            return { original: imgSrc, url: uploaded.secure_url };
+          } catch (err) {
+            console.error('Image upload error:', err);
+            return null;
+          }
         })
       );
 
-      // Replace image URLs with Cloudinary URLs
-      $('img').each((index, img) => {
-        const uploadedImage = uploadedImages.find((image) => image.url === $(img).attr('src'));
-        if (uploadedImage) {
-          $(img).attr('src', uploadedImage.secure_url);
-        } else {
-          console.log(`Error: Could not find uploaded image for ${$(img).attr('src')}`);
+      $('img').each((i, el) => {
+        const currentSrc = $(el).attr('src');
+        const found = uploadedImages.find(img => img?.original === currentSrc);
+        if (found) {
+          $(el).attr('src', found.url);
         }
       });
     }
 
-    // Get the updated content
-    const editorContent = $.html();
-    blog.postBy = new mongoose.Types.ObjectId(req.user);
+    const finalContent = $.html();
+
+    // Set blog fields
+    blog.postBy = req.user; // Assuming user is already an ObjectId
     blog.title = req.body.title;
     blog.description = req.body.description;
-    blog.blogContent = editorContent;
-    blog.save()
-      .then((data) => {
-        res.status(200).json({ message: 'blog saved successfully', data: data, success: true })
-      })
-      .catch((err) => {
-        res.status(500).json({ message: 'Error saving blog', error: err, success: false })
-      })
+    blog.blogContent = finalContent;
+
+    await blog.save();
+    return res.status(200).json({ success: true, message: 'Blog saved successfully.', data: blog });
 
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ success: false })
+    console.error('Error in saveBlog:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error.' });
   }
-
-}
+};
 // show individual blog
 exports.openBlog = async(req, res) => {
   try {

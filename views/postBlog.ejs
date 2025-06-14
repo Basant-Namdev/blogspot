@@ -78,8 +78,9 @@
                         required><%= typeof blog !== 'undefined' && blog.description ? blog.description : '' %></textarea>
                 </div>
                 <div>
-                    <div><label for="title">Cover image : </label> <input style="width: 64%;" type="file" id="coverImage" name="coverImage"
-                            placeholder="add a cover image for your blog..."  <%= typeof blog === 'undefined' ? 'required' : '' %>>
+                    <div><label for="title">Cover image : </label> <input style="width: 64%;" type="file"
+                            id="coverImage" name="coverImage" placeholder="add a cover image for your blog..." <%=typeof
+                            blog==='undefined' ? 'required' : '' %>>
                     </div>
                 </div>
             </div>
@@ -87,6 +88,8 @@
             <div style="display: flex; justify-content: center; margin-top: .3rem;"><button type="submit">Create
                     post</button></div>
         </form>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script src="https://cdn.tiny.cloud/1/<%= tinymce %>/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
         <script>
@@ -165,29 +168,42 @@
                         }
 
 
-                            const response = await fetch('/dashbord/postBlog/saveBlog', {
-                                method: 'POST',
-                                body: formData // Send the FormData object
-                            });
-                            document.getElementById('loader-container-container').style.display = "none"
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! status: ${response.status}`);
-                            }
-                            const result = await response.json();
-                            if (result.success) {
-                                alert('Blog post successfully submitted.');
-                                window.location.href = "/dashbord/myBlogs";
-                            }
-                        } else {
-                            alert('Internal server error. Please try again later.');
-                            console.error('Editor instance not found or does not have getContent method!');
-                        }
-                    } catch (error) {
+                        const response = await fetch('/dashbord/postBlog/saveBlog', {
+                            method: 'POST',
+                            body: formData // Send the FormData object
+                        });
                         document.getElementById('loader-container-container').style.display = "none"
-                        console.error('Error submitting form:', error.message, error.stack);
-                        alert('Error submitting form. Please try again later.');
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        const result = await response.json();
+                        if (result.success) {
+                            await Swal.fire({
+                                title: 'Success!',
+                                text: 'Blog post successfully submitted.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                            window.location.href = "/dashbord/myBlogs";
+                        }
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops!',
+                            text: 'Something went wrong on the server.',
+                        });
+                        console.error('Editor instance not found or does not have getContent method!');
                     }
-                });
+                } catch (error) {
+                    document.getElementById('loader-container-container').style.display = "none"
+                    console.error('Error submitting form:', error.message, error.stack);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops!',
+                        text: 'Something went wrong on the server.',
+                    });
+                }
+            });
 
         </script>
 </body>

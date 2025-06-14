@@ -7,6 +7,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const dashbordRoutes = require('./routes/dashbordRoutes')
 const homeRoutes = require('./routes/homeRoutes')
+const helmet = require('helmet');
 
 require('dotenv').config();
 
@@ -21,6 +22,56 @@ async function main() {
     console.error("Error connecting to database:", err);
   }
 }
+server.use(helmet());
+server.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://cdn.tiny.cloud",
+          "https://cdn.jsdelivr.net",
+          "https://kit.fontawesome.com"
+        ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://cdn.tiny.cloud",
+          "https://cdn.jsdelivr.net",
+          "https://kit.fontawesome.com",
+          "https://fonts.googleapis.com"
+        ],
+        styleSrcElem: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://cdn.tiny.cloud",
+          "https://cdn.jsdelivr.net",
+          "https://kit.fontawesome.com",
+          "https://fonts.googleapis.com"
+        ],
+        fontSrc: [
+          "'self'",
+          "https://fonts.gstatic.com",
+          "https://cdn.jsdelivr.net",
+          "https://kit.fontawesome.com",
+          "https://ka-f.fontawesome.com" // ✅ ADDED to fix font load error
+        ],
+        connectSrc: [
+          "'self'",
+          "https://cdn.tiny.cloud",
+          "https://ka-f.fontawesome.com"
+        ],
+        imgSrc: ["'self'", "data:","blob:", "https://res.cloudinary.com","https://sp.tinymce.com"],
+        objectSrc: ["'none'"]
+      }
+    }
+  })
+);
+
+
 
 server.use(cors());
 server.use(express.json());

@@ -1,9 +1,28 @@
 document.addEventListener("DOMContentLoaded", function () {
+    setOnClick();
     setupFormHandlers();
     updateLoginModalTrigger();
     window.addEventListener("resize", updateLoginModalTrigger);
 });
 
+function setOnClick() {
+    document.getElementById('start-home').addEventListener('click', () => toggleForms('signup'))
+    document.getElementById('belowLogin').addEventListener('click', () => toggleForms('signup'))
+    document.getElementById('belowSign').addEventListener('click', () => toggleForms('login'))
+    document.getElementById('modalBL').addEventListener('click', () => toggleForms('signup', true))
+    document.getElementById('modalBS').addEventListener('click', () => toggleForms('login', true))
+    for (let button of document.getElementsByClassName('read-more')) {
+        button.addEventListener('click', () => {
+            Swal.fire({
+                icon: 'info',
+                title: 'Login Required',
+                text: 'Please log in to read the full post.',
+            });
+        });
+    }
+
+
+}
 // Function to setup event handlers for login and signup forms
 function setupFormHandlers() {
     const loginForm = document.getElementById("login-form");
@@ -130,7 +149,7 @@ function validateEmail(email) {
 // Function to setup modal login/register click behavior
 function updateLoginModalTrigger() {
     console.log("in");
-    
+
     const loginRegisterLink = document.getElementById("login-register");
     const registerLink = document.getElementById('start-home')
     loginRegisterLink.removeEventListener("click", toggleForms);
