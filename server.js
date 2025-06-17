@@ -8,8 +8,10 @@ const MongoStore = require('connect-mongo');
 const dashbordRoutes = require('./routes/dashbordRoutes')
 const homeRoutes = require('./routes/homeRoutes')
 const helmet = require('helmet');
+const featurePolicy = require("feature-policy");
 
 require('dotenv').config();
+const isProd = process.env.NODE_ENV === "production";
 
 
 main().catch(err => console.log(err));
@@ -22,59 +24,85 @@ async function main() {
     console.error("Error connecting to database:", err);
   }
 }
-server.use(helmet());
 server.use(
-  helmet({
-    contentSecurityPolicy: {
-      useDefaults: true,
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          "https://cdn.tiny.cloud",
-          "https://cdn.jsdelivr.net",
-          "https://kit.fontawesome.com"
-        ],
-        styleSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          "https://cdn.tiny.cloud",
-          "https://cdn.jsdelivr.net",
-          "https://kit.fontawesome.com",
-          "https://fonts.googleapis.com"
-        ],
-        styleSrcElem: [
-          "'self'",
-          "'unsafe-inline'",
-          "https://cdn.tiny.cloud",
-          "https://cdn.jsdelivr.net",
-          "https://kit.fontawesome.com",
-          "https://fonts.googleapis.com"
-        ],
-        fontSrc: [
-          "'self'",
-          "https://fonts.gstatic.com",
-          "https://cdn.jsdelivr.net",
-          "https://kit.fontawesome.com",
-          "https://ka-f.fontawesome.com" // ✅ ADDED to fix font load error
-        ],
-        connectSrc: [
-          "'self'",
-          "https://cdn.tiny.cloud",
-          "https://ka-f.fontawesome.com"
-        ],
-        imgSrc: ["'self'", "data:","blob:", "https://res.cloudinary.com","https://sp.tinymce.com"],
-        objectSrc: ["'none'"]
-      }
-    }
+  helmet.contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      defaultSrc: ["'self'"],
+
+      /* TinyMCE & cdn.jsdelivr scripts */
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",                         // TinyMCE still needs inline for now
+        "https://cdn.tiny.cloud",
+        "https://cdn.jsdelivr.net",
+        "https://kit.fontawesome.com",
+      ],
+
+      /* Remote stylesheets + inline styles TinyMCE injects */
+      styleSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "https://fonts.googleapis.com",
+        "https://cdn.tiny.cloud",
+        "https://cdn.jsdelivr.net",
+        "https://kit.fontawesome.com",
+      ],
+
+      fontSrc: [
+        "'self'",
+        "https://fonts.gstatic.com",
+        "https://cdn.jsdelivr.net",
+        "https://kit.fontawesome.com",
+        "https://ka-f.fontawesome.com",
+      ],
+
+      connectSrc: [
+        "'self'",
+        "https://cdn.tiny.cloud",
+        "https://ka-f.fontawesome.com",
+      ],
+
+      /* Images you actually serve */
+      imgSrc: [
+        "'self'",
+        "data:",
+        "blob:",
+        "https://res.cloudinary.com",
+        "https://sp.tinymce.com",
+      ],
+
+      objectSrc: ["'none'"],                      // safer Flash/Object ban
+      upgradeInsecureRequests: [],               // auto‑upgrade HTTP → HTTPS
+    },
+  })
+);
+server.use(
+  featurePolicy({
+    features: {
+      geolocation: ["'none'"],
+      camera: ["'none'"],
+      microphone: ["'none'"],
+    },
+  })
+);
+server.use(helmet.frameguard({ action: "sameorigin" }));      // X‑Frame‑Options
+server.use(helmet.referrerPolicy({ policy: "strict-origin-when-cross-origin" }));
+server.use(
+  helmet.hsts({
+    maxAge: 31536000,                                          // 1 year
+    includeSubDomains: true,
+    preload: true,
   })
 );
 
-
-
-server.use(cors());
-server.use(express.json());
+server.use(
+  cors(
+    isProd
+      ? { origin: ["https://blogspot-r6oo.onrender.com/"], credentials: true }
+      : {} // allow all in dev
+  )
+);server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(express.static("public"));
 server.use('/public',express.static("public"));
