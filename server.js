@@ -8,7 +8,6 @@ const MongoStore = require('connect-mongo');
 const dashbordRoutes = require('./routes/dashbordRoutes')
 const homeRoutes = require('./routes/homeRoutes')
 const helmet = require('helmet');
-const featurePolicy = require("feature-policy");
 
 require('dotenv').config();
 const isProd = process.env.NODE_ENV === "production";
@@ -77,15 +76,6 @@ server.use(
     },
   })
 );
-server.use(
-  featurePolicy({
-    features: {
-      geolocation: ["'none'"],
-      camera: ["'none'"],
-      microphone: ["'none'"],
-    },
-  })
-);
 server.use(helmet.frameguard({ action: "sameorigin" }));      // X‑Frame‑Options
 server.use(helmet.referrerPolicy({ policy: "strict-origin-when-cross-origin" }));
 server.use(
@@ -95,6 +85,13 @@ server.use(
     preload: true,
   })
 );
+server.disable('x-powered-by');
+server.use((req, res, next) => {
+  res.setHeader("Permissions-Policy", "geolocation=(), camera=(), microphone=()");
+  next();
+});
+server.use(helmet.noSniff());
+
 
 server.use(
   cors(
